@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Language Encyclopedia — Every Language in One Place</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@300;400;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #FDF8F4;
+  --bg2: #F5EDE4;
+  --card: #FFFFFF;
+  --primary: #C0713A;
+  --primary-light: #E8A87C;
+  --primary-dark: #8B4513;
+  --text: #3D2B1F;
+  --text-light: #7A6555;
+  --accent: #D4A574;
+  --highlight: #FFF3CD;
+  --green: #6B8E5A;
+  --border: #E8D5C4;
+  --shadow: rgba(139, 69, 19, 0.08);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+header {
+  background: linear-gradient(135deg, #8B4513 0%, #C0713A 50%, #D4A574 100%);
+  padding: 60px 24px;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+header h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 2.8em;
+  font-weight: 700;
+  margin-bottom: 12px;
+  position: relative;
+  letter-spacing: -0.5px;
+}
+
+header p {
+  font-size: 1.15em;
+  opacity: 0.92;
+  position: relative;
+  font-weight: 300;
+}
+
+.search-bar {
+  max-width: 560px;
+  margin: 30px auto 0;
+  position: relative;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 16px 24px 16px 50px;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.05em;
+  font-family: 'Inter', sans-serif;
+  background: rgba(255,255,255,0.95);
+  color: var(--text);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  outline: none;
+  transition: all 0.3s;
+}
+
+.search-bar input:focus {
+  box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+}
+
+.search-bar input::placeholder { color: #aaa; }
+
+.search-icon {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2em;
+  color: var(--text-light);
+}
+
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 28px;
+  position: relative;
+}
+
+.stat-item {
+  text-align: center;
+  color: white;
+}
+
+.stat-item .num {
+  font-size: 1.8em;
+  font-weight: 700;
+  display: block;
+}
+
+.stat-item .lbl {
+  font-size: 0.85em;
+  opacity: 0.85;
+  font-weight: 300;
+}
+
+.categories {
+  padding: 40px 0 20px;
+}
+
+.categories h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 1.5em;
+  color: var(--text);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cat-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.cat-btn {
+  padding: 10px 22px;
+  border: 2px solid var(--border);
+  border-radius: 30px;
+  background: var(--card);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.cat-btn:hover, .cat-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 30px 0 60px;
+}
+
+.lang-card {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 28px;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+
+.lang-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px var(--shadow);
+  border-color: var(--primary-light);
+}
+
+.lang-card .icon {
+  font-size: 2.2em;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.lang-card h3 {
+  font-family: 'Merriweather', serif;
+  font-size: 1.2em;
+  color: var(--primary-dark);
+  margin-bottom: 6px;
+}
+
+.lang-card .year {
+  font-size: 0.82em;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.lang-card .desc {
+  font-size: 0.92em;
+  color: var(--text-light);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lang-card .tags {
+  margin-top: 12px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lang-card .tag {
+  padding: 3px 10px;
+  background: var(--bg2);
+  border-radius: 12px;
+  font-size: 0.75em;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.no-results {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-light);
+  font-size: 1.1em;
+}
+
+.no-results .big { font-size: 3em; margin-bottom: 12px; display: block; }
+
+/* DETAIL VIEW */
+.detail-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(61, 43, 31, 0.5);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.detail-overlay.show { display: flex; justify-content: center; align-items: flex-start; }
+
+.detail-panel {
+  background: var(--bg);
+  max-width: 800px;
+  width: 100%;
+  margin: 20px auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: slideUp 0.35s ease;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.detail-header {
+  padding: 40px;
+  color: white;
+  position: relative;
+}
+
+.detail-header .back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.detail-header .back-btn:hover { background: rgba(255,255,255,0.35); }
+
+.detail-header .big-icon { font-size: 3em; margin-bottom: 12px; display: block; }
+.detail-header h1 { font-family: 'Merriweather', serif; font-size: 2em; margin-bottom: 4px; }
+.detail-header .subtitle { opacity: 0.9; font-weight: 300; }
+
+.detail-body { padding: 36px 40px 48px; }
+
+.detail-section {
+  margin-bottom: 32px;
+}
+
+.detail-section h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 1.2em;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-section p, .detail-section li {
+  font-size: 1em;
+  line-height: 1.8;
+  color: var(--text);
+}
+
+.detail-section ul {
+  padding-left: 20px;
+}
+
+.detail-section li {
+  margin-bottom: 6px;
+}
+
+.highlight-box {
+  background: var(--highlight);
+  border-left: 4px solid var(--primary);
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  margin: 16px 0;
+  font-size: 0.95em;
+}
+
+.highlight-box strong { color: var(--primary-dark); }
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.info-item {
+  background: var(--card);
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.info-item .label {
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-light);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.info-item .value {
+  font-size: 1em;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.code-example {
+  background: #2D1B0E;
+  color: #F5DEB3;
+  padding: 18px 22px;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+  overflow-x: auto;
+  margin-top: 10px;
+  white-space: pre;
+}
+
+footer {
+  text-align: center;
+  padding: 40px 24px;
+  color: var(--text-light);
+  font-size: 0.9em;
+  border-top: 1px solid var(--border);
+}
+
+@media (max-width: 640px) {
+  header h1 { font-size: 1.8em; }
+  header { padding: 40px 16px; }
+  .stats-bar { gap: 20px; }
+  .stat-item .num { font-size: 1.3em; }
+  .detail-body { padding: 24px 20px 36px; }
+  .detail-header { padding: 28px 20px; }
+  .info-grid { grid-template-columns: 1fr; }
+  .lang-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Language Encyclopedia</h1>
+  <p>Every programming language in one place — Learn, explore, discover</p>
+  <div class="search-bar">
+    <span class="search-icon">&#128269;</span>
+    <input type="text" id="searchInput" placeholder="Search any language... (e.g. Python, Java, C++)" autocomplete="off">
+  </div>
+  <div class="stats-bar">
+    <div class="stat-item"><span class="num" id="totalCount">0</span><span class="lbl">Languages</span></div>
+    <div class="stat-item"><span class="num" id="catCount">0</span><span class="lbl">Categories</span></div>
+    <div class="stat-item"><span class="num" id="yearRange">-</span><span class="lbl">Years Covered</span></div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="categories">
+    <h2>Browse by Category</h2>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+  <div class="lang-grid" id="langGrid"></div>
+</div>
+
+<div class="detail-overlay" id="detailOverlay">
+  <div class="detail-panel" id="detailPanel"></div>
+</div>
+
+<footer>
+  Language Encyclopedia &mdash; Built for curious minds. Works completely offline.
+</footer>
+
+<script>
+const LANGUAGES = [
+  {
+    name: "Python", icon: "\uD83D\uDC0D", year: 1991, creator: "Guido van Rossum",
+    category: "General Purpose", difficulty: "Beginner-Friendly",
+    purpose: "Python is a high-level, interpreted language designed for readability and simplicity. It supports multiple programming paradigms including procedural, object-oriented, and functional programming.",
+    why: "Guido van Rossum created Python as a successor to the ABC language, aiming to make a language that was easy to read, fun to use, and powerful enough for real-world applications.",
+    uses: ["Web Development (Django, Flask)", "Data Science & Analytics (Pandas, NumPy)", "Machine Learning & AI (TensorFlow, PyTorch)", "Automation & Scripting", "Scientific Computing", "Desktop Applications", "Game Development (Pygame)"],
+    realLife: "Instagram uses Python/Django for its backend. Netflix uses it for recommendation systems. NASA uses Python for scientific calculations. YouTube's backend is partly built with Python.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional, Procedural",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted (CPython, PyPy, Jython)",
+    helloWorld: 'print("Hello, World!")',
+    keyFeatures: ["Indentation-based syntax (no curly braces)", "Extensive standard library (batteries included)", "Dynamic typing with optional type hints", "List comprehensions and generators", "Automatic memory management (garbage collection)", "Massive third-party package ecosystem (PyPI)"],
+    famousFor: "Readability first. Python's clean syntax makes it the #1 language for beginners and the top language for AI/Data Science."
+  },
+  {
+    name: "JavaScript", icon: "\u26A1", year: 1995, creator: "Brendan Eich",
+    category: "General Purpose", difficulty: "Beginner-Friendly",
+    purpose: "JavaScript is the language of the web. It runs in every browser and enables interactive, dynamic web pages. With Node.js, it also runs on servers.",
+    why: "Brendan Eich created JavaScript in just 10 days at Netscape to add interactivity to web pages. Despite its rushed creation, it evolved into the most widely-used programming language in the world.",
+    uses: ["Frontend Web Development (React, Vue, Angular)", "Backend Development (Node.js, Express)", "Mobile Apps (React Native)", "Desktop Apps (Electron)", "Game Development", "Machine Learning (TensorFlow.js)"],
+    realLife: "Every website you visit uses JavaScript — Facebook, Google, YouTube, Amazon. Netflix's interface, PayPal's checkout, and LinkedIn's feed all run on JavaScript.",
+    paradigm: "Multi-paradigm: Event-Driven, Functional, Object-Oriented",
+    typing: "Dynamic, Weakly Typed",
+    compilation: "Interpreted (V8, SpiderMonkey, JSCore)",
+    helloWorld: 'console.log("Hello, World!");',
+    keyFeatures: ["Runs in every web browser natively", "Asynchronous programming (Promises, async/await)", "First-class functions and closures", "Prototype-based object orientation", "Event-driven architecture", "Huge npm ecosystem (1.5M+ packages)"],
+    famousFor: "The only language that runs natively in web browsers. Without JavaScript, the modern web would not exist."
+  },
+  {
+    name: "Java", icon: "\u2615", year: 1995, creator: "James Gosling (Sun Microsystems)",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Java is a class-based, object-oriented language designed to be platform-independent — 'Write Once, Run Anywhere' (WORA). Programs compile to bytecode that runs on the Java Virtual Machine (JVM).",
+    why: "James Gosling created Java at Sun Microsystems to solve the problem of platform dependency. Before Java, programs had to be rewritten for each operating system. Java's JVM made cross-platform development standard.",
+    uses: ["Enterprise Applications (Banking, Insurance)", "Android App Development", "Web Applications (Spring, Hibernate)", "Big Data (Hadoop, Spark)", "Cloud Computing", "Scientific Applications"],
+    realLife: "Over 3 billion devices run Java — from Android phones to ATMs. Banks like Goldman Sachs and Citibank use Java for core systems. Netflix, Amazon, and Google use Java in their backends.",
+    paradigm: "Object-Oriented, Concurrent",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled to Bytecode (JVM)",
+    helloWorld: 'public class Hello { public static void main(String[] args) { System.out.println("Hello, World!"); } }',
+    keyFeatures: ["Platform Independent (JVM)", "Strong memory management", "Built-in multithreading", "Robust security features", "Extensive API and libraries", "Automatic garbage collection"],
+    famousFor: "Powering the entire Android ecosystem and enterprise software worldwide. Still one of the top 3 most-used languages."
+  },
+  {
+    name: "C", icon: "\uD83D\uDD27", year: 1972, creator: "Dennis Ritchie (Bell Labs)",
+    category: "Systems", difficulty: "Advanced",
+    purpose: "C is a low-level systems programming language that gives direct access to memory through pointers. It forms the foundation of modern computing — operating systems, compilers, and embedded systems are built with C.",
+    why: "Dennis Ritchie created C at Bell Labs to develop the UNIX operating system. Before C, system software was written in assembly language, which was platform-specific and hard to maintain.",
+    uses: ["Operating Systems (Linux, Windows, macOS kernels)", "Embedded Systems (IoT, Microcontrollers)", "Database Systems (MySQL, PostgreSQL)", "Compiler Development", "Game Engines", "System Utilities"],
+    realLife: "The Linux kernel (running most servers, Android phones) is written in C. Windows OS, macOS, and iOS contain massive amounts of C code. Every microcontroller in your car, fridge, or TV runs C code.",
+    paradigm: "Procedural, Imperative",
+    typing: "Static, Weakly Typed",
+    compilation: "Compiled (GCC, Clang, MSVC)",
+    helloWorld: '#include <stdio.h>\nint main() {\n    printf("Hello, World!\\n");\n    return 0;\n}',
+    keyFeatures: ["Direct memory access via pointers", "Minimal runtime overhead", "Bitwise operations", "Preprocessor directives (#include, #define)", "Portability across hardware", "Foundation for C++, Java, C#, and more"],
+    famousFor: "The language that built UNIX and modern operating systems. Almost every other language has C under the hood."
+  },
+  {
+    name: "C++", icon: "\u2699\uFE0F", year: 1983, creator: "Bjarne Stroustrup (Bell Labs)",
+    category: "Systems", difficulty: "Advanced",
+    purpose: "C++ is an extension of C with object-oriented features, templates, and the Standard Template Library (STL). It combines low-level memory control with high-level abstractions for maximum performance.",
+    why: "Bjarne Stroustrup created C++ (originally 'C with Classes') to add object-oriented programming to C while maintaining its performance. He wanted C's efficiency with Simula's abstraction capabilities.",
+    uses: ["Game Development (Unreal Engine, Unity core)", "Operating Systems", "Browsers (Chrome, Firefox engines)", "Database Engines", "High-Performance Computing", "Robotics & Autonomous Vehicles", "Financial Trading Systems"],
+    realLife: "Chrome browser, Photoshop, AutoCAD, Maya 3D, and most AAA game engines are built with C++. Stock trading systems at major banks use C++ for microsecond-level performance.",
+    paradigm: "Multi-paradigm: Procedural, Object-Oriented, Generic, Functional",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (GCC, Clang, MSVC)",
+    helloWorld: '#include <iostream>\nint main() {\n    std::cout << "Hello, World!" << std::endl;\n    return 0;\n}',
+    keyFeatures: ["Zero-cost abstractions", "Templates and generic programming", "RAII (Resource Acquisition Is Initialization)", "Move semantics and smart pointers", "STL containers and algorithms", "Multiple inheritance"],
+    famousFor: "The performance king. When every millisecond matters — games, trading, browsers — C++ is the choice."
+  },
+  {
+    name: "C#", icon: "\uD83C\uDFAF", year: 2000, creator: "Anders Hejlsberg (Microsoft)",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "C# is a modern, object-oriented language from Microsoft designed for building Windows applications, web services, and games. It runs on the .NET platform and combines C++ power with Java's simplicity.",
+    why: "Anders Hejlsberg created C# at Microsoft as a competitor to Java, fixing many of Java's limitations while maintaining its ease of use. It was designed to be the flagship language for the .NET ecosystem.",
+    uses: ["Windows Desktop Applications", "Game Development (Unity 3D)", "Web Development (ASP.NET)", "Mobile Apps (Xamarin/MAUI)", "Enterprise Software", "Cloud Services (Azure)"],
+    realLife: "Unity games (among the most popular game engine) are written in C#. Microsoft Office internals use C#. Stack Overflow, Pinterest's backend, and many enterprise systems run on C#/.NET.",
+    paradigm: "Object-Oriented, Component-Oriented",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled to IL (CLR)",
+    helloWorld: 'class Program { static void Main() { System.Console.WriteLine("Hello, World!"); } }',
+    keyFeatures: ["LINQ (Language Integrated Query)", "Async/Await for asynchronous programming", "Properties, Indexers, and Events", "Garbage collection", "Rich standard library (.NET)", "Integration with Visual Studio IDE"],
+    famousFor: "The language of Unity game development and Microsoft's enterprise ecosystem. Growing rapidly with .NET cross-platform support."
+  },
+  {
+    name: "TypeScript", icon: "\uD83D\uDC31", year: 2012, creator: "Anders Hejlsberg (Microsoft)",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "TypeScript is a superset of JavaScript that adds static typing. It catches errors at compile time and compiles down to plain JavaScript, making large-scale web development more manageable.",
+    why: "Anders Hejlsberg created TypeScript to solve JavaScript's biggest problem — lack of type safety in large codebases. As web apps grew massive, JavaScript's dynamic typing became a major source of bugs.",
+    uses: ["Large-Scale Web Applications", "Frontend Development (Angular is built with TS)", "Backend Development (Node.js with TS)", "React and Vue Projects", "Library/Framework Development"],
+    realLife: "Angular is built entirely in TypeScript. Microsoft, Slack, Airbnb, and DoorDash use TypeScript. VS Code (code editor) is written in TypeScript.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled to JavaScript (tsc)",
+    helloWorld: 'const greeting: string = "Hello, World!";\nconsole.log(greeting);',
+    keyFeatures: ["Static type checking", "Interfaces and type aliases", "Generics", "Enums", "Decorators", "Modules and namespaces", "IntelliSense/autocomplete support"],
+    famousFor: "JavaScript with superpowers. The fastest-growing language — adopted by nearly every major web project."
+  },
+  {
+    name: "Go", icon: "\uD83D\uDE80", year: 2009, creator: "Robert Griesemer, Rob Pike, Ken Thompson (Google)",
+    category: "Systems", difficulty: "Intermediate",
+    purpose: "Go (Golang) is a statically typed language designed at Google for simplicity, efficiency, and built-in concurrency. It compiles fast and produces efficient machine code.",
+    why: "Google engineers were frustrated with C++'s slow compilation and complex build systems. Go was created to be as fast as C but as simple as Python, with concurrency built into the language itself.",
+    uses: ["Cloud Infrastructure (Docker, Kubernetes)", "Microservices", "Command-Line Tools", "Web Servers", "DevOps Tools", "Network Programming"],
+    realLife: "Docker and Kubernetes — the backbone of modern cloud computing — are written in Go. Twitch, Uber, Dropbox, and Cloudflare use Go for high-performance backend services.",
+    paradigm: "Procedural, Concurrent, Compiled",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (Go compiler)",
+    helloWorld: 'package main\nimport "fmt"\nfunc main() {\n    fmt.Println("Hello, World!")\n}',
+    keyFeatures: ["Goroutines (lightweight concurrency)", "Fast compilation", "Garbage collection", "Simple syntax (only 25 keywords)", "Static linking", "Built-in testing framework"],
+    famousFor: "The language of cloud infrastructure. Docker, Kubernetes, and the entire DevOps toolchain are built with Go."
+  },
+  {
+    name: "Rust", icon: "\uD83E\uDE93", year: 2010, creator: "Graydon Hoare (Mozilla)",
+    category: "Systems", difficulty: "Advanced",
+    purpose: "Rust is a systems programming language focused on safety, speed, and concurrency. Its ownership system prevents memory bugs at compile time without a garbage collector.",
+    why: "Graydon Hoare created Rust at Mozilla to build a language as fast as C++ but without its memory safety bugs. Rust eliminates entire classes of bugs (null pointers, data races) at compile time.",
+    uses: ["Operating Systems (Linux kernel modules)", "WebAssembly", "Embedded Systems", "CLI Tools", "Game Engines", "Blockchain/Crypto", "Browser Engines (Firefox Servo)"],
+    realLife: "Mozilla Firefox uses Rust components. The Linux kernel now accepts Rust code. Cloudflare, Discord, Dropbox, and Figma use Rust for performance-critical services.",
+    paradigm: "Multi-paradigm: Procedural, Functional, Concurrent",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (rustc)",
+    helloWorld: 'fn main() {\n    println!("Hello, World!");\n}',
+    keyFeatures: ["Ownership and borrowing system", "Zero-cost abstractions", "No garbage collector", "Pattern matching", "Fearless concurrency", "Cargo package manager"],
+    famousFor: "The most loved language 8 years in a row (Stack Overflow). Memory safety without sacrificing performance."
+  },
+  {
+    name: "Swift", icon: "\uD83D\uDE80", year: 2014, creator: "Chris Lattner (Apple)",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Swift is Apple's modern language for iOS, macOS, watchOS, and tvOS development. It's designed to be safe, fast, and expressive — replacing Objective-C for Apple platform development.",
+    why: "Chris Lattner created Swift at Apple to be a safer, faster, and more modern alternative to Objective-C. Apple wanted a language that was as easy as Python but as fast as C++.",
+    uses: ["iOS App Development", "macOS Applications", "watchOS and tvOS Apps", "Server-Side Swift (Vapor)", "AR/VR Applications"],
+    realLife: "Every iPhone app on the App Store is either written in or uses Swift. Airbnb, LinkedIn, and Starbucks iOS apps are built with Swift. Apple's own apps use Swift extensively.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional, Protocol-Oriented",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (swiftc)",
+    helloWorld: 'print("Hello, World!")',
+    keyFeatures: ["Optionals for null safety", "Protocol-oriented programming", "Type inference", "Closures with shorthand syntax", "Memory safety (ARC)", "Playground for live coding"],
+    famousFor: "The language for all Apple platforms. If you want to build iPhone apps, Swift is the way."
+  },
+  {
+    name: "Kotlin", icon: "\uD83C\uDF1F", year: 2011, creator: "JetBrains",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Kotlin is a modern language that runs on the JVM and is fully interoperable with Java. It's Google's preferred language for Android development, fixing many of Java's verbosity issues.",
+    why: "JetBrains created Kotlin to be a better version of Java — more concise, more expressive, and safer. Google later adopted it as the official Android language.",
+    uses: ["Android App Development (Official)", "Server-Side Development", "Cross-Platform (Kotlin Multiplatform)", "Web Development", "Data Science"],
+    realLife: "Pinterest, Uber, Trello, and Coursera use Kotlin for Android. Google made it the official Android language in 2019. Kotlin Multiplatform is used by Netflix and Philips.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled to JVM Bytecode / JS / Native",
+    helloWorld: 'fun main() {\n    println("Hello, World!")\n}',
+    keyFeatures: ["Null safety (nullable types)", "Coroutines for async", "Data classes", "Extension functions", "Smart casts", "Full Java interoperability"],
+    famousFor: "Java's modern replacement and Google's official Android language. Concise, safe, and practical."
+  },
+  {
+    name: "PHP", icon: "\uD83C\uDF10", year: 1995, creator: "Rasmus Lerdorf",
+    category: "Web", difficulty: "Beginner-Friendly",
+    purpose: "PHP is a server-side scripting language designed for web development. It embeds directly into HTML and powers the backend of millions of websites.",
+    why: "Rasmus Lerdorf created PHP (originally 'Personal Home Page') to track visits to his online resume. It grew from simple CGI scripts into the most popular server-side web language.",
+    uses: ["WordPress (43% of the web)", "Laravel Framework", "E-commerce (Magento, WooCommerce)", "Content Management Systems", "Server-Side APIs"],
+    realLife: "WordPress, Facebook (originally), Wikipedia, Tumblr, Slack (original), and 77% of websites with known server-side languages use PHP.",
+    paradigm: "Procedural, Object-Oriented",
+    typing: "Dynamic, Weakly Typed",
+    compilation: "Interpreted (Zend Engine)",
+    helloWorld: '<?php\necho "Hello, World!";\n?>',
+    keyFeatures: ["Embeds directly in HTML", "Huge CMS ecosystem", "Simple deployment (shared hosting)", "Large community and documentation", "PHP 8+ with JIT compilation", "Composer package manager"],
+    famousFor: "Powering 77% of the web including WordPress. Often underestimated, but runs most of the internet."
+  },
+  {
+    name: "Ruby", icon: "\uD83D\uDC8E", year: 1995, creator: "Yukihiro Matsumoto",
+    category: "General Purpose", difficulty: "Beginner-Friendly",
+    purpose: "Ruby is a dynamic, object-oriented language focused on developer happiness and productivity. Everything in Ruby is an object, and it emphasizes elegant, readable syntax.",
+    why: "Yukihiro Matsumoto ('Matz') created Ruby to be a language that optimizes for programmer happiness. He drew from Perl, Smalltalk, Eiffel, Ada, and Lisp to create something beautiful.",
+    uses: ["Web Development (Ruby on Rails)", "Prototyping & Startups", "Automation & Scripting", "Data Processing", "DevOps Tools"],
+    realLife: "GitHub, Shopify, Twitch, Basecamp, and Airbnb were originally built with Ruby on Rails. Rails pioneered modern web frameworks that influenced Django, Laravel, and others.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional, Imperative",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted (MRI/CRuby, JRuby)",
+    helloWorld: 'puts "Hello, World!"',
+    keyFeatures: ["Everything is an object", "Blocks and Procs", "Metaprogramming capabilities", "Ruby on Rails convention over configuration", "Clean, English-like syntax", "Gem package ecosystem"],
+    famousFor: "Ruby on Rails changed how web apps are built. The language designed for programmer happiness."
+  },
+  {
+    name: "R", icon: "\uD83D\uDCCA", year: 1993, creator: "Ross Ihaka & Robert Gentleman",
+    category: "Data Science", difficulty: "Intermediate",
+    purpose: "R is a language and environment specifically designed for statistical computing, data analysis, and graphical visualization. It's the standard in academic research and statistics.",
+    why: "Ross Ihaka and Robert Gentleman created R at the University of Auckland as an open-source implementation of the S language, specifically for statisticians and data miners.",
+    uses: ["Statistical Analysis", "Data Visualization (ggplot2)", "Machine Learning", "Bioinformatics", "Academic Research", "Financial Modeling"],
+    realLife: "Used in research at Harvard, MIT, and major universities. Pfizer, Bank of America, and the FDA use R for statistical analysis. COVID-19 data analysis heavily used R.",
+    paradigm: "Functional, Imperative, Object-Oriented",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted",
+    helloWorld: 'cat("Hello, World!\\n")',
+    keyFeatures: ["Powerful statistical packages", "ggplot2 for beautiful visualizations", "CRAN repository (18,000+ packages)", "DataFrame operations", "R Markdown for reports", "Shiny for interactive dashboards"],
+    famousFor: "The language of statisticians and data scientists. Unmatched for statistical analysis and academic research."
+  },
+  {
+    name: "Scala", icon: "\u26CF\uFE0F", year: 2004, creator: "Martin Odersky",
+    category: "General Purpose", difficulty: "Advanced",
+    purpose: "Scala is a language that combines object-oriented and functional programming on the JVM. It's designed for large-scale distributed systems and big data processing.",
+    why: "Martin Odersky created Scala to address criticisms of Java while remaining fully compatible with it. He wanted to prove that object-oriented and functional programming could coexist elegantly.",
+    uses: ["Big Data (Apache Spark, Kafka, Flink)", "Distributed Systems", "Web Applications (Play Framework)", "Data Engineering", "Financial Systems"],
+    realLife: "Apache Spark (big data processing) is written in Scala. Twitter, LinkedIn, Netflix, and Airbnb use Scala for data pipelines and backend services.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled to JVM Bytecode (scalac)",
+    helloWorld: 'object Hello extends App {\n  println("Hello, World!")\n}',
+    keyFeatures: ["Seamless Java interoperability", "Pattern matching", "Case classes for immutable data", "Type inference", "Akka for actor-based concurrency", "For-comprehensions"],
+    famousFor: "The language behind Apache Spark and modern big data infrastructure. Java's sophisticated cousin."
+  },
+  {
+    name: "Haskell", icon: "\uD83D\uDD2E", year: 1990, creator: "Committee (Simon Peyton Jones, etc.)",
+    category: "Functional", difficulty: "Advanced",
+    purpose: "Haskell is a purely functional, lazy-evaluated language with strong static typing. It emphasizes mathematical correctness and has a powerful type system that catches bugs at compile time.",
+    why: "Haskell was created as a standard for non-strict functional programming languages, named after logician Haskell Curry. It was designed for research and to push the boundaries of type theory.",
+    uses: ["Academic Research", "Compiler Development", "Financial Systems (Standard Chartered)", "Blockchain (Cardano)", "Formal Verification"],
+    realLife: "Standard Chartered bank uses Haskell for financial risk systems. Facebook used Haskell for spam detection. The Cardano blockchain is built with Haskell.",
+    paradigm: "Functional, Lazy, Pure",
+    typing: "Static, Strongly Typed, Type Inference",
+    compilation: "Compiled (GHC), Interpreted (GHCi)",
+    helloWorld: 'main :: IO ()\nmain = putStrLn "Hello, World!"',
+    keyFeatures: ["Purely functional (no side effects)", "Lazy evaluation", "Powerful type system with type classes", "Monads for effects", "Algebraic data types", "Pattern matching"],
+    famousFor: "The purest functional language. When correctness matters more than anything, Haskell delivers."
+  },
+  {
+    name: "Lua", icon: "\uD83C\uDF0A", year: 1993, creator: "Roberto Ierusalimschy, Waldemar Celes, Luiz Henrique de Figueiredo",
+    category: "Scripting", difficulty: "Beginner-Friendly",
+    purpose: "Lua is a lightweight, embeddable scripting language designed to be embedded inside other applications. It's extremely fast and small, perfect for game scripting and extensions.",
+    why: "The creators at the Pontifical Catholic University of Rio de Janeiro wanted a scripting language that was lightweight, fast, and easy to embed into C/C++ applications.",
+    uses: ["Game Scripting (World of Warcraft, Roblox)", "Embedded Systems", "Game Engines (LÖVE, Defold)", "Configuration Files", "Web Server Configuration (Nginx)", "Network Security Tools"],
+    realLife: "World of Warcraft uses Lua for its UI scripting. Roblox games are written in Lua. Nginx and Redis use Lua for extensibility. Adobe Lightroom uses Lua for plugins.",
+    paradigm: "Multi-paradigm: Procedural, Object-Oriented (prototype-based), Functional",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted (luac, LuaJIT)",
+    helloWorld: 'print("Hello, World!")',
+    keyFeatures: ["Tiny footprint (~200KB)", "LuaJIT for near-C performance", "Tables as the only data structure", "Coroutines", "Easy C/C++ integration", "Metatables for OOP"],
+    famousFor: "The most popular embedded scripting language. Used in games, databases, and network equipment."
+  },
+  {
+    name: "Perl", icon: "\uD83E\uDD9A", year: 1987, creator: "Larry Wall",
+    category: "Scripting", difficulty: "Intermediate",
+    purpose: "Perl is a high-level, general-purpose scripting language known for its powerful text processing capabilities. It's the 'duct tape of the Internet' for system administration and web development.",
+    why: "Larry Wall created Perl to make report processing easier, combining features from sed, awk, shell scripting, and C. It became the go-to language for text manipulation and system administration.",
+    uses: ["System Administration", "Text Processing & Reporting", "Web Development (CGI)", "Bioinformatics", "Network Programming", "Log Analysis"],
+    realLife: "Amazon, BBC, and Craigslist used Perl extensively. Bioinformatics labs worldwide use Perl for DNA sequence analysis. System administrators rely on Perl for automation.",
+    paradigm: "Multi-paradigm: Procedural, Object-Oriented, Functional",
+    typing: "Dynamic, Weakly Typed",
+    compilation: "Interpreted",
+    helloWorld: 'print "Hello, World!\\n";',
+    keyFeatures: ["Powerful regular expressions", "CPAN module repository", "TMTOWTDI (There's More Than One Way To Do It)", "Text processing excellence", "Live code modification", "Sharp learning curve but enormous power"],
+    famousFor: "The ultimate text processing language. If it involves text manipulation, Perl can do it."
+  },
+  {
+    name: "Shell (Bash)", icon: "\uD83D\uDCBB", year: 1989, creator: "Brian Fox (GNU Project)",
+    category: "Scripting", difficulty: "Beginner-Friendly",
+    purpose: "Bash is the Unix shell and command language used for operating system shell scripting, task automation, and system administration on Linux/macOS systems.",
+    why: "Brian Fox created Bash for the GNU Project as a free replacement for the Bourne shell. It became the default shell on most Unix-like systems, including macOS and Linux distributions.",
+    uses: ["System Administration", "Server Automation", "CI/CD Pipelines", "DevOps & Cloud", "Cron Jobs & Scheduling", "Quick Prototyping"],
+    realLife: "Every Linux server uses Bash for automation. Docker containers use shell scripts. GitHub Actions, Jenkins, and all CI/CD tools rely on shell scripting. AWS Lambda supports Bash.",
+    paradigm: "Procedural, Imperative",
+    typing: "Dynamic, Untyped",
+    compilation: "Interpreted",
+    helloWorld: 'echo "Hello, World!"',
+    keyFeatures: ["Direct OS command execution", "Pipes and redirects", "Cron scheduling", "Environment variable management", "Process control", "Wildcards and globbing"],
+    famousFor: "The language that controls every Linux/Unix server. Essential knowledge for any developer or sysadmin."
+  },
+  {
+    name: "MATLAB", icon: "\uD83D\uDD2C", year: 1984, creator: "Cleve Moler (MathWorks)",
+    category: "Data Science", difficulty: "Intermediate",
+    purpose: "MATLAB is a proprietary language for numerical computing, data analysis, algorithm development, and visualization. It's the standard in engineering and scientific research.",
+    why: "Cleve Moler created MATLAB to give students access to LINPACK and EISPACK without learning Fortran. MathWorks later commercialized it into a full platform for engineers.",
+    uses: ["Engineering Simulation", "Signal Processing", "Image Processing", "Control Systems", "Robotics", "Financial Modeling", "Academic Research"],
+    realLife: "Used by NASA, SpaceX, Boeing, and virtually every engineering university. Tesla uses MATLAB for vehicle control systems. NASA's Mars rover software uses MATLAB.",
+    paradigm: "Multi-paradigm: Array-based, Functional, Imperative",
+    typing: "Dynamic, Weakly Typed",
+    compilation: "Interpreted (JIT compiled)",
+    helloWorld: "disp('Hello, World!')",
+    keyFeatures: ["Matrix and array operations", "Built-in visualization (plots, graphs)", "Simulink for simulation", "Toolboxes for every field", "Interactive REPL environment", "Code generation for embedded systems"],
+    famousFor: "The language of engineers and scientists. MATLAB is the standard for numerical computing and simulation."
+  },
+  {
+    name: "Scratch", icon: "\uD83C\uDFB2", year: 2007, creator: "Mitchel Resnick (MIT)",
+    category: "Education", difficulty: "Beginner-Friendly",
+    purpose: "Scratch is a visual, block-based programming language designed for kids and beginners. Users snap together code blocks to create interactive stories, games, and animations.",
+    why: "MIT Media Lab created Scratch to teach programming to children aged 8-16. The block-based approach removes syntax errors and lets beginners focus on logic and creativity.",
+    uses: ["Learning to Program", "Interactive Stories", "Simple Games", "Animations", "Education in Schools Worldwide"],
+    realLife: "Used in over 150 countries for programming education. Kids have created over 100 million projects on Scratch. Many professional programmers started with Scratch.",
+    paradigm: "Event-Driven, Visual/Block-Based",
+    typing: "Visual (no text-based types)",
+    compilation: "Interpreted (block-to-JS transpiler)",
+    helloWorld: "[say Hello, World! block]",
+    keyFeatures: ["Visual block-based coding", "No syntax errors possible", "Built-in sprites and backgrounds", "Online sharing community", "MIT App Inventor for mobile", "Extensible with extensions"],
+    famousFor: "The #1 language for teaching kids to code. Made programming accessible to everyone, regardless of reading level."
+  },
+  {
+    name: "Dart", icon: "\uD83C\uDFAF", year: 2011, creator: "Lars Bak & Kasper Lund (Google)",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Dart is a client-optimized language from Google for building apps on any platform. It's the language behind Flutter, Google's cross-platform UI toolkit for mobile, web, and desktop.",
+    why: "Google created Dart to replace JavaScript for web development and to power their Flutter framework. It was designed for fast development with hot reload and excellent tooling.",
+    uses: ["Mobile App Development (Flutter)", "Web Applications", "Desktop Applications", "Server-Side Development"],
+    realLife: "Google Pay, BMW, Toyota, and eBay use Flutter/Dart for their mobile apps. Flutter is one of the fastest-growing frameworks for cross-platform development.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional, Imperative",
+    typing: "Static, Strongly Typed (with sound null safety)",
+    compilation: "Compiled to native (AOT) or JS (JIT)",
+    helloWorld: 'void main() {\n  print("Hello, World!");\n}',
+    keyFeatures: ["Hot reload for instant preview", "Sound null safety", "AOT and JIT compilation", "Flutter widget-based UI", "Full Dart VM", "Single codebase for all platforms"],
+    famousFor: "The language powering Flutter — build iOS, Android, web, and desktop from one codebase."
+  },
+  {
+    name: "Elixir", icon: "\u2728", year: 2011, creator: "José Valim",
+    category: "Functional", difficulty: "Intermediate",
+    purpose: "Elixir is a functional, concurrent language built on the Erlang VM (BEAM). It's designed for scalable, fault-tolerant, real-time applications with excellent developer experience.",
+    why: "José Valim created Elixir to combine Erlang's legendary reliability and concurrency with a more modern, Ruby-like syntax and better tooling for web development.",
+    uses: ["Real-Time Web Apps (Phoenix LiveView)", "Distributed Systems", "Telecommunications", "IoT", "High-Availability Systems"],
+    realLife: "Discord uses Elixir to handle millions of concurrent users. Pinterest, PepsiCo, and Brex use Elixir for scalable backend services. WhatsApp used Erlang (same VM) for 2M concurrent connections per server.",
+    paradigm: "Functional, Concurrent, Process-Oriented",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Compiled (BEAM bytecode)",
+    helloWorld: 'IO.puts("Hello, World!")',
+    keyFeatures: ["Actor model concurrency (processes)", "Fault tolerance ('let it crash')", "Pattern matching", "Pipe operator (|>)", "Mix build tool", "Phoenix LiveView for real-time UIs"],
+    famousFor: "Real-time, fault-tolerant applications. Elixir handles millions of users with elegant concurrency."
+  },
+  {
+    name: "Clojure", icon: "\uD83E\uDDE0", year: 2007, creator: "Rich Hickey",
+    category: "Functional", difficulty: "Advanced",
+    purpose: "Clojure is a modern Lisp dialect that runs on the JVM. It emphasizes immutable data structures, functional programming, and concurrency for building reliable systems.",
+    why: "Rich Hickey created Clojure to bring Lisp's power to modern platforms while solving real-world concurrency problems through immutable data and software transactional memory.",
+    uses: ["Data Processing", "Financial Systems", "Web Development", "Concurrency-Heavy Applications", "Research"],
+    realLife: "Nubank (world's largest digital bank) uses Clojure. Netflix, Walmart, and Amazon use Clojure for data-intensive services.",
+    paradigm: "Functional, Lisp, Concurrent",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Compiled to JVM Bytecode (clojurec)",
+    helloWorld: '(println "Hello, World!")',
+    keyFeatures: ["Homoiconic (code as data)", "Immutable persistent data structures", "Software Transactional Memory", "REPL-driven development", "Sequences and lazy evaluation", "Full JVM interoperability"],
+    famousFor: "A Lisp for the modern world. Immutable by default, concurrent by design."
+  },
+  {
+    name: "Julia", icon: "\uD83E\uDDA0", year: 2012, creator: "Jeff Bezanson, Stefan Karpinski, Viral Shah, Alan Edelman",
+    category: "Data Science", difficulty: "Intermediate",
+    purpose: "Julia is a high-performance language designed for technical and scientific computing. It solves the 'two-language problem' — fast as C, easy as Python.",
+    why: "Researchers were tired of writing prototype code in Python/Matlab then rewriting in C++ for performance. Julia was created to be both fast and easy, eliminating this split.",
+    uses: ["Scientific Computing", "Machine Learning", "Data Analysis", "Computational Biology", "Quantitative Finance", "Climate Modeling"],
+    realLife: "Used by Federal Reserve, NASA, Intel, and many research institutions. Climate modeling, astrophysics simulations, and genetic analysis use Julia for performance-critical computations.",
+    paradigm: "Multi-paradigm: Multi-dispatch, Functional, Procedural",
+    typing: "Dynamic, Strongly Typed (with optional type annotations)",
+    compilation: "Compiled (LLVM JIT)",
+    helloWorld: 'println("Hello, World!")',
+    keyFeatures: ["JIT compilation (C-like speed)", "Multiple dispatch", "Powerful type system", "Built-in parallelism", "Matlab-like syntax for math", "Unicode support for equations"],
+    famousFor: "Fast as C, easy as Python. Julia solves the two-language problem in scientific computing."
+  },
+  {
+    name: "SQL", icon: "\uD83D\uDCC4", year: 1974, creator: "Donald Chamberlin & Raymond Boyce (IBM)",
+    category: "Data", difficulty: "Beginner-Friendly",
+    purpose: "SQL (Structured Query Language) is the standard language for managing and querying relational databases. It's essential for data manipulation and database management.",
+    why: "IBM researchers Chamberlin and Boyce created SQL (originally SEQUEL) to allow non-programmers to query data from databases using English-like statements.",
+    uses: ["Database Management", "Data Analysis", "Business Intelligence", "Reporting", "Data Science", "Backend Development"],
+    realLife: "Every major company uses SQL — banks, hospitals, social media, e-commerce. MySQL, PostgreSQL, SQLite, Oracle, and SQL Server run the world's data.",
+    paradigm: "Declarative, Set-Based",
+    typing: "Static (column-based)",
+    compilation: "Interpreted by database engines",
+    helloWorld: "SELECT 'Hello, World!';",
+    keyFeatures: ["Declarative (describe WHAT, not HOW)", "JOIN operations for combining tables", "Aggregate functions (COUNT, SUM, AVG)", "Subqueries and CTEs", "Indexing for performance", "ACID compliance"],
+    famousFor: "50+ years old and still the most-used query language. Every app with a database uses SQL."
+  },
+  {
+    name: "Assembly", icon: "\u2699\uFE0F", year: 1949, creator: "Various (first for EDSAC)",
+    category: "Systems", difficulty: "Expert",
+    purpose: "Assembly language is a low-level programming language that provides a thin abstraction over machine code. Each assembly instruction corresponds directly to a CPU instruction.",
+    why: "Assembly emerged when programmers needed a human-readable way to write machine code. It replaced raw binary instructions with mnemonic codes like MOV, ADD, and JMP.",
+    uses: ["Operating System Kernels", "Device Drivers", "Embedded/Microcontroller Programming", "Bootloaders", "Performance-Critical Code", "Reverse Engineering", "Game Console Programming"],
+    realLife: "BIOS/UEFI firmware is written in Assembly. Game console code uses Assembly for optimization. Device drivers for hardware (printers, GPUs) use Assembly. The first stage of every OS bootloader is Assembly.",
+    paradigm: "Imperative, Procedural",
+    typing: "Untyped (raw bytes/words)",
+    compilation: "Assembled (NASM, MASM, GAS)",
+    helloWorld: '; x86 Linux\nsection .data\n    msg db "Hello, World!", 10\nsection .text\n    global _start\n_start:\n    mov edx, 14\n    mov ecx, msg\n    mov ebx, 1\n    mov eax, 4\n    int 0x80\n    mov eax, 1\n    int 0x80',
+    keyFeatures: ["Direct hardware control", "Minimal overhead", "CPU-specific instructions", "Bit-level manipulation", "Interrupt handling", "Memory-mapped I/O"],
+    famousFor: "The closest you can get to hardware without writing binary. Every other language eventually becomes Assembly."
+  },
+  {
+    name: "COBOL", icon: "\uD83D\uDCB3", year: 1959, creator: "Grace Hopper & Committee",
+    category: "Legacy", difficulty: "Intermediate",
+    purpose: "COBOL (Common Business-Oriented Language) is designed for business, finance, and administrative systems. It processes billions of financial transactions daily worldwide.",
+    why: "The US Department of Defense created COBOL to be a portable, English-like language for business computing. Grace Hopper's work on early compilers led to its creation.",
+    uses: ["Banking & Financial Systems", "Insurance Companies", "Government Systems (IRS, SSA)", "Mainframe Applications", "Payroll Processing"],
+    realLife: "95% of ATM transactions use COBOL. The IRS, Social Security Administration, and most banks run COBOL on mainframes. There are 220+ billion lines of COBOL in active use.",
+    paradigm: "Procedural, Object-Oriented (COBOL 2002)",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled",
+    helloWorld: 'IDENTIFICATION DIVISION.\nPROGRAM-ID. HELLO.\nPROCEDURE DIVISION.\n    DISPLAY "Hello, World!".\n    STOP RUN.',
+    keyFeatures: ["English-like verbose syntax", "Excellent decimal arithmetic (no floating-point errors)", "Record/file handling", "Massive existing codebase", "Highly stable and reliable", "Still in active demand"],
+    famousFor: "60+ years old and still running the world's banking systems. More COBOL is written annually than Python."
+  },
+  {
+    name: "Fortran", icon: "\uD83D\uDE80", year: 1957, creator: "John Backus (IBM)",
+    category: "Scientific", difficulty: "Intermediate",
+    purpose: "Fortran (Formula Translation) is the oldest high-level language still in active use. It remains the standard for numerical and scientific computing due to unmatched performance.",
+    why: "John Backus and IBM created Fortran so scientists and engineers could write programs without learning assembly language. It was the first widely-used high-level programming language.",
+    uses: ["Weather Forecasting", "Climate Modeling", "Computational Physics", "Aerospace Engineering", "Supercomputing", "Finite Element Analysis"],
+    realLife: "Climate models, weather prediction systems, NASA's trajectory calculations, and most supercomputer applications use Fortran. It consistently ranks in the top 15 most-used languages.",
+    paradigm: "Procedural, Object-Oriented (Fortran 2003+), Array-based",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (gfortran, ifort)",
+    helloWorld: 'program hello\n  print *, "Hello, World!"\nend program hello',
+    keyFeatures: ["Array operations (whole-array math)", "Do concurrent for parallel loops", "Coarrays for distributed computing", "Intrinsic math functions", "Excellent compiler optimizations", "MODULE for code organization"],
+    famousFor: "The original high-level language (1957). Still the king of scientific computing and supercomputers."
+  },
+  {
+    name: "Objective-C", icon: "\uD83C\uDF4E", year: 1984, creator: "Brad Cox & Tom Love",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Objective-C is a general-purpose, object-oriented language that adds Smalltalk-style messaging to C. It was Apple's primary language for macOS and iOS development before Swift.",
+    why: "Brad Cox and Tom Love created Objective-C to combine C's power with Smalltalk's object-oriented messaging. Apple later adopted it as the main language for macOS and iOS.",
+    uses: ["Legacy macOS/iOS Applications", "Apple Frameworks (Cocoa, Cocoa Touch)", "Maintaining Existing Apple Apps"],
+    realLife: "Most of Apple's existing frameworks (UIKit, AppKit) are written in Objective-C. Many major iOS apps still contain Objective-C code alongside Swift.",
+    paradigm: "Object-Oriented (Smalltalk-style), Procedural",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Compiled (clang)",
+    helloWorld: '#import <Foundation/Foundation.h>\nint main() {\n    @autoreleasepool {\n        NSLog(@"Hello, World!");\n    }\n}',
+    keyFeatures: ["Smalltalk-style message passing", "Dynamic runtime", "Categories for extending classes", "Protocols (interfaces)", "Full C interoperability", "Memory management (ARC)"],
+    famousFor: "Apple's original iOS/Mac language. Being replaced by Swift but still powers many Apple apps."
+  },
+  {
+    name: "VHDL", icon: "\uD83D\uDD27", year: 1987, creator: "US Dept. of Defense",
+    category: "Hardware", difficulty: "Advanced",
+    purpose: "VHDL (VHSIC Hardware Description Language) is used to model and describe digital circuits and hardware systems. It's used in FPGA and ASIC design.",
+    why: "The US Department of Defense created VHDL to document the behavior of ASICs. It evolved into a full simulation and synthesis language for digital hardware design.",
+    uses: ["FPGA Programming", "ASIC Design", "Digital Circuit Simulation", "Aerospace Electronics", "Military & Defense Systems"],
+    realLife: "Used to design chips, FPGAs in spacecraft, military radar systems, medical devices, and telecommunications equipment. Xilinx and Intel FPGAs are programmed with VHDL.",
+    paradigm: "Concurrent, Dataflow, Event-Driven",
+    typing: "Strong, Static",
+    compilation: "Synthesized to hardware (Xilinx Vivado, Quartus)",
+    helloWorld: 'entity hello is\nend entity;\narchitecture behav of hello is\nbegin\n  process begin\n    report "Hello, World!";\n    wait;\n  end process;\nend architecture;',
+    keyFeatures: ["Hardware description (not software)", "Signal-based concurrency", "Process blocks", "Type-safe", "Generics for parameterized design", "Waveform simulation"],
+    famousFor: "Not a programming language in the traditional sense — it describes actual hardware circuits."
+  },
+  {
+    name: "Verilog", icon: "\uD83D\uDD0C", year: 1984, creator: "Phil Moorby & Prabhu Goel",
+    category: "Hardware", difficulty: "Advanced",
+    purpose: "Verilog is a hardware description language used to model electronic systems. It's the main alternative to VHDL for FPGA and ASIC design, with C-like syntax.",
+    why: "Phil Moorby created Verilog at Gateway Design Automation to make hardware design more accessible with a C-like syntax. It was later standardized as IEEE 1364.",
+    uses: ["FPGA Design", "ASIC/Chip Design", "Hardware Verification", "Digital Logic Design", "GPU/CPU Design"],
+    realLife: "Intel, AMD, NVIDIA, and Qualcomm use Verilog for chip design. Most modern processors and GPUs are designed and verified using Verilog/SystemVerilog.",
+    paradigm: "Dataflow, Concurrent, Structural, Behavioral",
+    typing: "Weak, Dynamic",
+    compilation: "Synthesized to hardware (Design Compiler, Vivado)",
+    helloWorld: 'module hello;\n  initial begin\n    $display("Hello, World!");\n    $finish;\n  end\nendmodule',
+    keyFeatures: ["C-like syntax for hardware", "Module-based design", "Continuous assignments (assign)", "Always blocks for sequential logic", "Gate-level primitives", "Testbench methodology"],
+    famousFor: "The language that designs the chips inside your computer, phone, and every electronic device."
+  },
+  {
+    name: "Groovy", icon: "\uD83C\uDF3F", year: 2003, creator: "James Strachan",
+    category: "General Purpose", difficulty: "Beginner-Friendly",
+    purpose: "Groovy is a dynamic language for the JVM that complements Java with scripting capabilities, closures, and a more concise syntax. It's fully interoperable with Java.",
+    why: "James Strachan created Groovy to make JVM scripting easier, bringing Python/Ruby-like features to the Java ecosystem while maintaining full Java compatibility.",
+    uses: ["Build Automation (Gradle)", "Jenkins Pipelines", "Testing (Spock Framework)", "Web Development (Grails)", "Scripting on the JVM"],
+    realLife: "Gradle build system is written in Groovy. Jenkins (the most popular CI/CD tool) uses Groovy for pipeline scripting. Grails web framework uses Groovy.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional, Scripting",
+    typing: "Dynamic, Strongly Typed (with optional static typing)",
+    compilation: "Compiled or Interpreted (JVM)",
+    helloWorld: "println 'Hello, World!'",
+    keyFeatures: ["Closures", "GStrings for string interpolation", "Property access syntax", "Safe navigation operator (?.)", "DSL creation capabilities", "Full Java interoperability"],
+    famousFor: "Java's scripting companion. Powers Gradle and Jenkins — essential DevOps tools."
+  },
+  {
+    name: "PowerShell", icon: "\u2699\uFE0F", year: 2006, creator: "Jeffrey Snover (Microsoft)",
+    category: "Scripting", difficulty: "Intermediate",
+    purpose: "PowerShell is a task automation and configuration management framework from Microsoft, consisting of a command-line shell and scripting language built on .NET.",
+    why: "Jeffrey Snover created PowerShell to bring the power of .NET to command-line administration, replacing the limited CMD shell with an object-oriented pipeline.",
+    uses: ["Windows System Administration", "Azure Cloud Management", "Active Directory Management", "DevOps Automation", "CI/CD Pipelines"],
+    realLife: "Every Windows server uses PowerShell for administration. Azure's entire management layer uses PowerShell. DevOps teams automate infrastructure with PowerShell DSC.",
+    paradigm: "Object-Oriented, Pipeline, Scripting",
+    typing: "Dynamic, Strongly Typed (object-based)",
+    compilation: "Interpreted (.NET)",
+    helloWorld: 'Write-Host "Hello, World!"',
+    keyFeatures: ["Object pipeline (not text)", ".NET integration", "Cmdlets (verb-noun pattern)", "Desired State Configuration", "Remote management", "Cross-platform (PowerShell Core)"],
+    famousFor: "Windows administration powerhouse. Object-based pipelines changed how system administration works."
+  },
+  {
+    name: "F#", icon: "\uD83C\uDFB5", year: 2005, creator: "Don Syme (Microsoft Research)",
+    category: "Functional", difficulty: "Intermediate",
+    purpose: "F# is a functional-first language on the .NET platform. It combines functional programming with object-oriented features and is excellent for data-oriented problem solving.",
+    why: "Don Syme created F# at Microsoft Research to bring functional programming to the .NET ecosystem, inspired by OCaml and designed for practical software engineering.",
+    uses: ["Financial Modeling", "Data Science", "Web Development (Fable, SAFE Stack)", "Scientific Computing", "Game Development"],
+    realLife: "TrendMicro, Jet.com, and GuardSquare use F#. It's popular in finance for quantitative analysis. SAFE Stack is used for full-stack web development.",
+    paradigm: "Functional-first, Object-Oriented, Imperative",
+    typing: "Static, Strongly Typed (with type inference)",
+    compilation: "Compiled to .NET IL (F# Compiler)",
+    helloWorld: 'printfn "Hello, World!"',
+    keyFeatures: ["Type inference", "Pattern matching", "Discriminated unions", "Computation expressions", "Pipe operators", "Units of measure for types"],
+    famousFor: "The functional language for .NET developers. Elegant, practical, and powerful for data-oriented problems."
+  },
+  {
+    name: "OCaml", icon: "\uD83D\uDC32", year: 1996, creator: "Xavier Leroy, Jérôme Vouillon, Damien Doligez, Didier Rémy (INRIA)",
+    category: "Functional", difficulty: "Advanced",
+    purpose: "OCaml is a multi-paradigm language from the ML family, known for its powerful type system and pattern matching. It's used in areas where correctness and performance are critical.",
+    why: "OCaml evolved from Caml, created at INRIA (French national research institute) to advance programming language research with strong static typing and type inference.",
+    uses: ["Formal Verification", "Compiler Development", "Financial Trading", "Static Analysis Tools", "Academic Research"],
+    realLife: "Jane Street (largest electronic market maker) uses OCaml for trading systems. Facebook's Hack compiler typechecker was originally written in OCaml. Coq proof assistant is written in OCaml.",
+    paradigm: "Multi-paradigm: Functional, Imperative, Object-Oriented",
+    typing: "Static, Strongly Typed (Hindley-Milner type inference)",
+    compilation: "Compiled (ocamlopt), Interpreted (ocaml)",
+    helloWorld: 'print_endline "Hello, World!"',
+    keyFeatures: ["Hindley-Milner type inference", "Pattern matching", "Algebraic data types", "Polymorphic variants", "Memory-safe with GC", "Native code compiler"],
+    famousFor: "The language of Jane Street and formal verification. When correctness is non-negotiable, OCaml delivers."
+  },
+  {
+    name: "Prolog", icon: "\uD83E\uDDE0", year: 1972, creator: "Alain Colmerauer & Robert Kowalski",
+    category: "Logic", difficulty: "Advanced",
+    purpose: "Prolog is a logic programming language where you define facts and rules, and the system uses logical inference to answer queries. It's based on formal logic.",
+    why: "Colmerauer and Kowalski created Prolog to explore natural language processing using formal logic. It represents problems as logical relations and lets the computer infer answers.",
+    uses: ["Artificial Intelligence", "Natural Language Processing", "Expert Systems", "Database Querying", "Theorem Proving", "Knowledge Representation"],
+    realLife: "IBM Watson's Jeopardy! system used Prolog for knowledge representation. Expert systems in medicine and law use Prolog. Grammar rules in NLP tools use Prolog.",
+    paradigm: "Logic, Declarative",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted (WAM - Warren Abstract Machine)",
+    helloWorld: ':- write(\'Hello, World!\'), nl.',
+    keyFeatures: ["Facts and rules", "Unification algorithm", "Backtracking search", "Pattern matching built-in", "Definite Clause Grammars", "Constraint Logic Programming"],
+    famousFor: "The AI language before deep learning. Declarative problem-solving through logic and inference."
+  },
+  {
+    name: "Lisp", icon: "\uD83D\uDCDC", year: 1958, creator: "John McCarthy (MIT)",
+    category: "Functional", difficulty: "Advanced",
+    purpose: "Lisp (List Processing) is one of the oldest programming languages still in use. It pioneered many concepts: tree data structures, garbage collection, recursion, and higher-order functions.",
+    why: "John McCarthy created Lisp at MIT to explore formal theories of computation and artificial intelligence. Its unique S-expression syntax and homoiconicity made it revolutionary.",
+    uses: ["AI Research (historically)", "Emacs Editor (Emacs Lisp)", "Scripting", "Language Research", "CAD Systems (AutoLISP)"],
+    realLife: "Emacs editor uses Emacs Lisp for all its functionality. AutoCAD uses AutoLISP. Lisp was the primary language of AI research for decades.",
+    paradigm: "Multi-paradigm: Functional, Procedural, Reflective",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted or Compiled",
+    helloWorld: '(print "Hello, World!")',
+    keyFeatures: ["S-expression syntax (everything is a list)", "Homoiconic (code is data)", "Garbage collection (invented here)", "REPL-driven development", "Macros and metaprogramming", "First-class functions"],
+    famousFor: "The second-oldest high-level language. Invented garbage collection, recursion in programming, and influenced nearly every modern language."
+  },
+  {
+    name: "Smalltalk", icon: "\uD83E\uDD13", year: 1972, creator: "Alan Kay, Dan Ingalls, Adele Goldberg (Xerox PARC)",
+    category: "Object-Oriented", difficulty: "Intermediate",
+    purpose: "Smalltalk is a pure object-oriented language where everything is an object. It pioneered the graphical user interface and modern OOP concepts.",
+    why: "Alan Kay and team at Xerox PARC created Smalltalk to explore personal computing and object-oriented programming for children and education.",
+    uses: ["Object-Oriented Education", "Rapid Prototyping", "Web Development (Seaside)", "Financial Systems (VisualWorks)"],
+    realLife: "Smalltalk inspired Java, Python, Ruby, and Objective-C. Early Apple Macintosh GUI was influenced by Smalltalk. Many banking systems still use VisualWorks Smalltalk.",
+    paradigm: "Pure Object-Oriented",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted (image-based)",
+    helloWorld: 'Transcript show: \'Hello, World!\'.',
+    keyFeatures: ["Everything is an object (even numbers)", "Message passing", "Image-based persistence", "Live debugging while running", "GUI development environment", "MVC pattern origin"],
+    famousFor: "The language that invented modern OOP and the GUI. Every object-oriented language owes a debt to Smalltalk."
+  },
+  {
+    name: "Pascal", icon: "\uD83D\uDCD6", year: 1970, creator: "Niklaus Wirth",
+    category: "Education", difficulty: "Beginner-Friendly",
+    purpose: "Pascal was designed as a teaching language to encourage good programming practices through structured programming and data structuring. It was widely used in universities.",
+    why: "Niklaus Wirth created Pascal to teach structured programming and data types. It was named after mathematician Blaise Pascal and became the dominant teaching language for decades.",
+    uses: ["Computer Science Education", "Legacy Systems", "Embedded Systems (Delphi)", "Windows Development (Delphi)"],
+    realLife: "Delphi (Object Pascal) was used to create Skype, PowerPoint (early versions), and many Windows applications. Pascal is still taught in many universities worldwide.",
+    paradigm: "Procedural, Structured, Object-Oriented (Object Pascal)",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled",
+    helloWorld: 'program Hello;\nbegin\n  writeln(\'Hello, World!\');\nend.',
+    keyFeatures: ["Strong type checking", "Structured programming", "Record and set types", "Nested procedures", "Readable syntax", "Delphi for rapid app development"],
+    famousFor: "The language that taught a generation of programmers structured programming. Delphi still powers many Windows apps."
+  },
+  {
+    name: "Ada", icon: "\uD83D\uDEE1\uFE0F", year: 1980, creator: "Jean Ichbiah (CII Honeywell Bull, for US DoD)",
+    category: "Systems", difficulty: "Advanced",
+    purpose: "Ada is a high-integrity language designed for safety-critical and mission-critical systems. It's used in avionics, air traffic control, power plants, and military systems.",
+    why: "The US Department of Defense funded Ada to replace the hundreds of different languages used in military systems. Named after Ada Lovelace, the first programmer.",
+    uses: ["Avionics & Aerospace", "Air Traffic Control", "Nuclear Power Plants", "Military Systems", "Railway Systems", "Medical Devices"],
+    realLife: "The Boeing 787, Airbus A380, and F-35 fighter jet use Ada. The International Space Station software uses Ada. London Underground signaling systems use Ada.",
+    paradigm: "Multi-paradigm: Object-Oriented, Concurrent, Real-Time",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (GNAT, Green Hills)",
+    helloWorld: 'with Ada.Text_IO;\nprocedure Hello is\nbegin\n  Ada.Text_IO.Put_Line("Hello, World!");\nend Hello;',
+    keyFeatures: ["SPARK for formal verification", "Built-in concurrency (tasks)", "Real-time scheduling", "Strong exception handling", "Package-based modularity", "Range types for safety"],
+    famousFor: "The language of safety-critical systems. When lives depend on code, Ada is the choice."
+  },
+  {
+    name: "LabVIEW", icon: "\uD83D\uDCCA", year: 1986, creator: "Jeffrey Kodosky (National Instruments)",
+    category: "Visual", difficulty: "Intermediate",
+    purpose: "LabVIEW is a visual programming language using a dataflow-based graphical notation called G. It's designed for instrument control, data acquisition, and industrial automation.",
+    why: "National Instruments created LabVIEW to let engineers and scientists create measurement and automation systems without traditional text-based programming.",
+    uses: ["Test & Measurement", "Data Acquisition", "Industrial Automation", "Instrument Control", "Signal Processing", "Academic Research"],
+    realLife: "CERN uses LabVIEW for particle accelerator control. Automotive companies use it for manufacturing test systems. NASA uses it for spacecraft testing.",
+    paradigm: "Dataflow, Visual/Graphical",
+    typing: "Strong, Static",
+    compilation: "Compiled (to machine code via LLVM)",
+    helloWorld: "[Text Constant: 'Hello, World!'] -> [Indicate Dialog]",
+    keyFeatures: ["Graphical/drag-and-drop programming", "Dataflow execution model", "Hardware integration", "Built-in signal processing", "Real-time execution", "FPGA target support"],
+    famousFor: "The visual language for engineers. Controls the instruments and test equipment in labs worldwide."
+  },
+  {
+    name: "Erlang", icon: "\uD83D\uDCDE", year: 1986, creator: "Joe Armstrong (Ericsson)",
+    category: "Functional", difficulty: "Intermediate",
+    purpose: "Erlang is a concurrent, fault-tolerant language designed for building highly available, distributed systems. It was created for telecom and excels at handling massive concurrency.",
+    why: "Joe Armstrong created Erlang at Ericsson to build telephone switching systems that never go down. Its 'let it crash' philosophy and actor model make systems incredibly resilient.",
+    uses: ["Telecommunications", "Messaging Systems", "Real-Time Applications", "Databases (CouchDB, Riak)", "RabbitMQ", "WhatsApp Backend"],
+    realLife: "WhatsApp handled 2M+ concurrent users per server with Erlang. Ericsson's phone switches run with 99.9999999% uptime using Erlang. RabbitMQ, CouchDB, and Discord use Erlang.",
+    paradigm: "Functional, Concurrent, Actor Model",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Compiled (BEAM VM)",
+    helloWorld: 'io:format("Hello, World!~n").',
+    keyFeatures: ["Actor model concurrency", "Supervision trees for fault tolerance", "Hot code swapping", "Distributed by default", "Pattern matching", "Lightweight processes (millions possible)"],
+    famousFor: "99.9999999% uptime. The language that powers telecom systems and WhatsApp."
+  },
+  {
+    name: "COOL", icon: "\uD83D\uDCA4", year: 1995, creator: "Alex Aiken (Stanford)",
+    category: "Education", difficulty: "Beginner-Friendly",
+    purpose: "COOL (Classroom Object-Oriented Language) is an educational language designed for teaching compiler construction. It has enough features to be interesting but is simple enough to implement.",
+    why: "Alex Aiken created COOL at Stanford specifically for the university's compiler course. Students implement a full compiler for COOL, learning all stages of compilation.",
+    uses: ["Compiler Construction Courses", "CS Education"],
+    realLife: "Used in Stanford, Cornell, and many other top CS programs for their compiler courses. Students build a working compiler for COOL from scratch.",
+    paradigm: "Object-Oriented",
+    typing: "Static, Strongly Typed",
+    compilation: "Students implement the compiler!",
+    helloWorld: 'class Main inherits IO {\n    main() : Object {\n        out_string("Hello, World!\\n")\n    };\n};',
+    keyFeatures: ["Designed for easy compilation", "Single inheritance", "Static type checking", "Automatic garbage collection", "Simple but complete OOP", "String and I/O support"],
+    famousFor: "The language students build compilers for. Learn how compilers really work by implementing one for COOL."
+  },
+  {
+    name: "WebAssembly (Wasm)", icon: "\uD83C\uDF10", year: 2017, creator: "W3C Committee (Mozilla, Google, Microsoft, Apple)",
+    category: "Systems", difficulty: "Advanced",
+    purpose: "WebAssembly is a binary instruction format that enables near-native performance in web browsers. Languages like C, C++, Rust, and Go can compile to Wasm for the web.",
+    why: "The major browser vendors (Mozilla, Google, Microsoft, Apple) created Wasm to run high-performance code in browsers — games, video editing, CAD — that was impossible with JavaScript alone.",
+    uses: ["High-Performance Web Apps", "Games in Browser", "Video/Image Editing", "Scientific Simulations", "Blockchain Smart Contracts", "Edge Computing"],
+    realLife: "Google Earth runs in the browser via Wasm. Figma's rendering engine uses Wasm. AutoCAD runs in browsers using Wasm. Unity and Unreal Engine export to Wasm.",
+    paradigm: "Stack-based, Low-Level",
+    typing: "Static (typed instruction set)",
+    compilation: "Compiled from C/C++/Rust/Go (Emscripten, wasm-pack)",
+    helloWorld: '(module\n  (func (export "hello")\n    (i32.const 65)\n    (call 1))) ;; simplified',
+    keyFeatures: ["Near-native execution speed", "Runs in all major browsers", "Language-agnostic (compile any language)", "Sandboxed security model", "Streaming compilation", "WASI for system access"],
+    famousFor: "Running C++/Rust at native speed inside web browsers. The future of high-performance web applications."
+  },
+  {
+    name: "Ballerina", icon: "\uD83D\uDC83", year: 2017, creator: "WSO2",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Ballerina is a cloud-native programming language designed for integration and microservices. It treats network concepts as first-class language features.",
+    why: "WSO2 created Ballerina because integrating systems with traditional languages was too complex. Ballerina natively understands HTTP, gRPC, SQL, and messaging.",
+    uses: ["Microservices", "API Development", "Cloud-Native Applications", "Integration Solutions", "Network Programming"],
+    realLife: "Used in enterprise integration scenarios at companies using WSO2 middleware. Growing in cloud-native development.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional, Integration-focused",
+    typing: "Static, Strongly Typed (with type inference)",
+    compilation: "Compiled to JVM bytecode",
+    helloWorld: 'import ballerina/io;\npublic function main() {\n    io:println("Hello, World!");\n}',
+    keyFeatures: ["Network-native types (HTTP, gRPC, etc.)", "Transactional support built-in", "Built-in data types (JSON, XML)", "Concurrency with workers", "Contract-first API development", "Cloud deployment support"],
+    famousFor: "Programming language designed specifically for integration and cloud-native development."
+  },
+  {
+    name: "Crystal", icon: "\uD83D\uDC8E", year: 2014, creator: "Ary Borenszweig & Juan Wajnerman (Manas Tech Solutions)",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Crystal is a language with Ruby-like syntax but C-like performance. It has static type inference, so you write code that looks like Ruby but runs as fast as C.",
+    why: "The creators wanted Ruby's beautiful syntax without its performance limitations. Crystal achieves this through static typing with type inference — you don't write type annotations but get C-like speed.",
+    uses: ["Web Development", "CLI Tools", "Microservices", "API Servers", "System Utilities"],
+    realLife: "Used by Manas Technology Solutions and various startups for high-performance web services. Growing in the DevOps tooling community.",
+    paradigm: "Multi-paradigm: Object-Oriented, Imperative",
+    typing: "Static, Strongly Typed (with type inference)",
+    compilation: "Compiled (LLVM)",
+    helloWorld: 'puts "Hello, World!"',
+    keyFeatures: ["Ruby-like syntax", "Static type inference", "Compile-time type checking", "Null reference checking", "C bindings", "Built-in HTTP server"],
+    famousFor: "Ruby's syntax with C's performance. Write beautiful code that runs fast."
+  },
+  {
+    name: "Nim", icon: "\uD83D\uDC0D", year: 2008, creator: "Andreas Rumpf",
+    category: "Systems", difficulty: "Intermediate",
+    purpose: "Nim is a statically typed, compiled language with Python-like syntax that compiles to C, C++, or JavaScript. It emphasizes efficiency, expressiveness, and elegance.",
+    why: "Andreas Rumpf created Nim to combine the ease of Python with the performance of C, using a powerful macro system and compile-time evaluation.",
+    uses: ["Systems Programming", "Web Development (compiles to JS)", "Game Development", "CLI Tools", "Embedded Systems"],
+    realLife: "Used for building high-performance tools, game backends, and web applications. Growing community with adopters in various industries.",
+    paradigm: "Multi-paradigm: Procedural, Object-Oriented, Functional, Metaprogramming",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (to C/C++/JS)",
+    helloWorld: 'echo "Hello, World!"',
+    keyFeatures: ["Python-like syntax", "Compiles to C, C++, or JavaScript", "Metaprogramming via macros", "Compile-time function execution", "Memory management (ARC/ORC)", "Zero-cost abstractions"],
+    famousFor: "Python-like elegance with C-level performance. Compiles to multiple backends."
+  },
+  {
+    name: "Zig", icon: "\u26A1", year: 2016, creator: "Andrew Kelley",
+    category: "Systems", difficulty: "Advanced",
+    purpose: "Zig is a systems programming language designed as a better C. It has no hidden control flow, no hidden allocations, and provides C interop without wrappers.",
+    why: "Andrew Kelley created Zig to fix C's problems without adding the complexity of C++. Zig aims to be the best C replacement with explicit behavior and great tooling.",
+    uses: ["Systems Programming", "C/C++ Replacement", "Game Engines", "Operating Systems", "Embedded Systems", "Cross-compilation"],
+    realLife: "TigerBeetle (financial database) is built with Zig. Bun (fast JavaScript runtime) is written in Zig. Used as a better cross-compiler than many existing tools.",
+    paradigm: "Procedural, Imperative",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (self-hosting, LLVM backend)",
+    helloWorld: 'const std = @import("std");\npub fn main() void {\n    std.debug.print("Hello, World!\\n", .{});\n}',
+    keyFeatures: ["No hidden control flow or allocations", "Comptime (compile-time execution)", "C interop without FFI", "Cross-compilation built-in", "Allocator-based memory management", "Error handling with error sets"],
+    famousFor: "The better C. No hidden behavior, excellent tooling, and growing rapidly as a C/C++ replacement."
+  },
+  {
+    name: "V", icon: "\u2728", year: 2019, creator: "Alexander Medvednikov",
+    category: "Systems", difficulty: "Intermediate",
+    purpose: "V is a statically typed compiled language designed for simplicity and speed. It aims to compile in under a second and produce clean, readable code without runtime overhead.",
+    why: "Alexander Medvednikov created V to build a language that combines Go's simplicity with Rust's safety and C's performance, while compiling extremely fast.",
+    uses: ["Systems Programming", "Web Development", "Game Development", "CLI Tools", "Embedded Development"],
+    realLife: "Still growing in adoption. The V ecosystem includes a text editor, graphics library, and web framework.",
+    paradigm: "Multi-paradigm: Procedural, Object-Oriented, Functional",
+    typing: "Static, Strongly Typed",
+    compilation: "Compiled (self-hosting)",
+    helloWorld: 'fn main() {\n    println("Hello, World!")\n}',
+    keyFeatures: ["Compiles in <1s", "No null, no globals, no undefined", "C interop", "SIMD support", "Hot code reloading", "Built-in web framework"],
+    famousFor: "Aims to compile in under 1 second. Simple, fast, and compiles instantly."
+  },
+  {
+    name: "Hack", icon: "\uD83D\uDD74", year: 2014, creator: "Facebook (Meta)",
+    category: "General Purpose", difficulty: "Intermediate",
+    purpose: "Hack is a language for the HipHop Virtual Machine (HHVM) that runs PHP programs. It adds static typing to PHP while maintaining compatibility with existing PHP code.",
+    why: "Facebook created Hack to improve PHP's performance and add type safety to their massive PHP codebase. It allows gradual typing — add types where you want, leave dynamic where you prefer.",
+    uses: ["Facebook/Meta Backend", "High-Performance Web Applications", "PHP Migration (gradual typing)"],
+    realLife: "Facebook's entire backend runs on Hack/HHVM. Many features you use on Facebook are served by Hack code.",
+    paradigm: "Multi-paradigm: Object-Oriented, Functional, Imperative",
+    typing: "Static (gradual), Strongly Typed",
+    compilation: "Compiled (HHVM JIT)",
+    helloWorld: '<?hh\nfunction main(): void {\n  echo "Hello, World!\\n";\n}\nmain();',
+    keyFeatures: ["Gradual typing (add types incrementally)", "Collections with type parameters", "Async/await for concurrency", "XHP for HTML generation", "PHP compatibility", "HHVM JIT performance"],
+    famousFor: "Facebook's evolution of PHP. Gradual typing for massive codebases."
+  },
+  {
+    name: "Lua", icon: "\uD83C\uDF0A", year: 1993, creator: "Roberto Ierusalimschy et al.", 
+    category: "Scripting", difficulty: "Beginner-Friendly",
+    purpose: "Lua is a lightweight, fast scripting language designed to be embedded in applications. It's widely used in game development for scripting and configuration.",
+    why: "Created at PUC-Rio in Brazil to be a simple, embeddable language. Its small size and speed make it ideal for embedding in larger applications.",
+    uses: ["Game Scripting (WoW, Roblox)", "Embedded Systems", "Nginx/OpenResty", "Redis scripting", "Game Engines"],
+    realLife: "World of Warcraft UI is scripted in Lua. Roblox games are written in Lua. Nginx/OpenResty uses Lua for request processing.",
+    paradigm: "Multi-paradigm: Procedural, Object-Oriented (prototype-based)",
+    typing: "Dynamic, Strongly Typed",
+    compilation: "Interpreted (LuaJIT for performance)",
+    helloWorld: 'print("Hello, World!")',
+    keyFeatures: ["Tiny (~200KB)", "Tables as universal data structure", "LuaJIT for near-C speed", "Coroutines", "Metatables", "Easy C integration"],
+    famousFor: "The most popular embedded scripting language. Tiny, fast, and embeddable."
+  },
+  {
+    name: "Awk", icon: "\uD83D\uDCCA", year: 1977, creator: "Alfred Aho, Peter Weinberger, Brian Kernighan",
+    category: "Scripting", difficulty: "Beginner-Friendly",
+    purpose: "Awk is a domain-specific language designed for text processing and data extraction. It excels at processing structured text files with pattern matching.",
+    why: "The creators (whose initials form the name A-W-K) at Bell Labs wanted a language that made text processing and reporting easy. It's named after its developers' initials.",
+    uses: ["Log File Processing", "Data Extraction", "Report Generation", "Text Processing", "Quick Data Analysis"],
+    realLife: "System administrators use awk daily for parsing logs, extracting data from CSV files, and generating reports. It's pre-installed on virtually every Unix system.",
+    paradigm: "Pattern-Action, Declarative",
+    typing: "Dynamic",
+    compilation: "Interpreted",
+    helloWorld: "BEGIN { print \"Hello, World!\" }",
+    keyFeatures: ["Pattern matching on text streams", "Automatic field splitting", "Built-in variables (NR, NF, FS)", "One-line text processing", "Available on every Unix system", "Regular expressions built-in"],
+    famousFor: "The original text processing language. One-liners that replace 50-line scripts in other languages."
+  },
+  {
+    name: "Tcl", icon: "\uD83D\uDD27", year: 1988, creator: "John Ousterhout",
+    category: "Scripting", difficulty: "Beginner-Friendly",
+    purpose: "Tcl (Tool Command Language) is a dynamic scripting language designed for rapid prototyping, scripted applications, and testing (with its companion toolkit Tk for GUIs).",
+    why: "John Ousterhout created Tcl to provide a simple embeddable scripting language for electronic design automation (EDA) tools, later adding Tk for GUI development.",
+    uses: ["EDA/Electronics Simulation", "GUI Development (Tk)", "Testing & Automation", "Rapid Prototyping", "Cisco IOS scripting"],
+    realLife: "Tkinter (Python's GUI library) is built on Tcl/Tk. EDA tools from Cadence and Synopsys use Tcl for scripting. Expect (automation tool) uses Tcl.",
+    paradigm: "Multi-paradigm: Event-driven, Imperative, Object-Oriented",
+    typing: "Dynamic, Untyped",
+    compilation: "Interpreted",
+    helloWorld: 'puts "Hello, World!"',
+    keyFeatures: ["Everything is a string", "Tk GUI toolkit", "Event-driven I/O", "Safe interpreter for untrusted code", "Easy C integration", "Cross-platform GUI"],
+    famousFor: "Tk toolkit changed GUI programming. Every Python Tkinter app uses Tcl under the hood."
+  },
+  {
+    name: "Forth", icon: "\u2693", year: 1970, creator: "Charles H. Moore",
+    category: "Stack-Based", difficulty: "Advanced",
+    purpose: "Forth is a stack-based, interactive language designed for embedded systems and real-time applications. It uses Reverse Polish Notation (RPN) and extensible dictionary.",
+    why: "Charles Moore created Forth to control telescopes at the National Radio Astronomy Observatory. Its minimal footprint and interactive nature made it perfect for embedded control.",
+    uses: ["Embedded Systems", "Space Applications", "NASA Spacecraft", "Real-Time Control", "Bootloaders", "FPGA prototyping"],
+    realLife: "NASA's Philae lander on comet 67P used Forth (via Chuck Moore's colorForth). Many spacecraft use Forth for instrument control. The Ace32 bootloader uses Forth.",
+    paradigm: "Stack-Based, Concatenative, Interactive",
+    typing: "Stack-based (untyped at runtime)",
+    compilation: "Compiled (threaded code)",
+    helloWorld: '.( Hello, World!)',
+    keyFeatures: ["Stack-based computation", "RPN (no operator precedence)", "Extensible vocabulary", "Interactive development", "Tiny footprint (<10KB)", "Direct hardware access"],
+    famousFor: "Controlled spacecraft to a comet. The most minimal and direct programming language."
+  }
+];
+
+const CATEGORIES = [...new Set(LANGUAGES.map(l => l.category))];
+
+function getDifficultyColor(d) {
+  const colors = { "Beginner-Friendly": "#6B8E5A", "Intermediate": "#C0713A", "Advanced": "#8B4513", "Expert": "#5C2D0E" };
+  return colors[d] || "#999";
+}
+
+function renderCards(langs) {
+  const grid = document.getElementById('langGrid');
+  if (langs.length === 0) {
+    grid.innerHTML = '<div class="no-results"><span class="big">\uD83D\uDD0D</span>No languages found. Try a different search.</div>';
+    return;
+  }
+  grid.innerHTML = langs.map(l => `
+    <div class="lang-card" onclick="showDetail(${LANGUAGES.indexOf(l)})">
+      <span class="icon">${l.icon}</span>
+      <h3>${l.name}</h3>
+      <div class="year">Est. ${l.year} &middot; ${l.creator}</div>
+      <div class="desc">${l.purpose}</div>
+      <div class="tags">
+        <span class="tag" style="background:${getDifficultyColor(l.difficulty)}22;color:${getDifficultyColor(l.difficulty)}">${l.difficulty}</span>
+        <span class="tag">${l.category}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderCategories() {
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = `<button class="cat-btn active" onclick="filterCategory('All', this)">All</button>` +
+    CATEGORIES.map(c => `<button class="cat-btn" onclick="filterCategory('${c}', this)">${c}</button>`).join('');
+}
+
+let currentCategory = 'All';
+function filterCategory(cat, btn) {
+  currentCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = document.getElementById('searchInput').value.toLowerCase().trim();
+  let filtered = LANGUAGES;
+  if (currentCategory !== 'All') filtered = filtered.filter(l => l.category === currentCategory);
+  if (q) filtered = filtered.filter(l =>
+    l.name.toLowerCase().includes(q) ||
+    l.creator.toLowerCase().includes(q) ||
+    l.category.toLowerCase().includes(q) ||
+    l.purpose.toLowerCase().includes(q) ||
+    (l.uses && l.uses.some(u => u.toLowerCase().includes(q)))
+  );
+  renderCards(filtered);
+}
+
+document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+function showDetail(idx) {
+  const l = LANGUAGES[idx];
+  const panel = document.getElementById('detailPanel');
+  const grad = `linear-gradient(135deg, ${getDifficultyColor(l.difficulty)} 0%, ${getDifficultyColor(l.difficulty)}CC 100%)`;
+
+  panel.innerHTML = `
+    <div class="detail-header" style="background:${grad}">
+      <button class="back-btn" onclick="closeDetail()">&larr;</button>
+      <span class="big-icon">${l.icon}</span>
+      <h1>${l.name}</h1>
+      <div class="subtitle">Est. ${l.year} &middot; Created by ${l.creator}</div>
+    </div>
+    <div class="detail-body">
+      <div class="detail-section">
+        <h2>\uD83D\uDCA1 What is ${l.name}?</h2>
+        <p>${l.purpose}</p>
+      </div>
+
+      <div class="detail-section">
+        <h2>\uD83D\uDCA0 Why Was It Created?</h2>
+        <p>${l.why}</p>
+      </div>
+
+      <div class="detail-section">
+        <h2>\uD83D\uDCCB Quick Info</h2>
+        <div class="info-grid">
+          <div class="info-item"><div class="label">Creator</div><div class="value">${l.creator}</div></div>
+          <div class="info-item"><div class="label">First Released</div><div class="value">${l.year}</div></div>
+          <div class="info-item"><div class="label">Category</div><div class="value">${l.category}</div></div>
+          <div class="info-item"><div class="label">Difficulty</div><div class="value">${l.difficulty}</div></div>
+          <div class="info-item"><div class="label">Typing</div><div class="value">${l.typing}</div></div>
+          <div class="info-item"><div class="label">Compilation</div><div class="value">${l.compilation}</div></div>
+          <div class="info-item"><div class="label">Paradigm</div><div class="value">${l.paradigm}</div></div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2>\uD83C\uDFAF What Is It Used For?</h2>
+        <ul>${l.uses.map(u => `<li>${u}</li>`).join('')}</ul>
+      </div>
+
+      <div class="detail-section">
+        <div class="highlight-box">
+          <strong>\uD83D\uDD25 Real-World Examples:</strong><br>${l.realLife}
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <h2>\u2B50 Key Features</h2>
+        <ul>${l.keyFeatures.map(f => `<li>${f}</li>`).join('')}</ul>
+      </div>
+
+      <div class="detail-section">
+        <h2>\uD83D\uDCA2 Hello World</h2>
+        <div class="code-example">${escapeHtml(l.helloWorld)}</div>
+      </div>
+
+      <div class="detail-section">
+        <div class="highlight-box">
+          <strong>\uD83C\uDFC6 Why ${l.name} Matters:</strong><br>${l.famousFor}
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('detailOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDetail() {
+  document.getElementById('detailOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('detailOverlay').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('detailOverlay')) closeDetail();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeDetail();
+});
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// INIT
+renderCategories();
+renderCards(LANGUAGES);
+document.getElementById('totalCount').textContent = LANGUAGES.length;
+document.getElementById('catCount').textContent = CATEGORIES.length;
+const years = LANGUAGES.map(l => l.year);
+document.getElementById('yearRange').textContent = Math.min(...years) + '-' + Math.max(...years);
+</script>
+</body>
+</html>
